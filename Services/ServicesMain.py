@@ -21,11 +21,6 @@ class MainServices:
         app = dashboard()
         app.mainloop()
 
-    def open_Email(self, tela_atual):
-        tela_atual.destroy()  
-        from Interface.Email import email
-        app = email()
-        app.mainloop()
 
     def open_Pedidos(self, tela_atual):
         tela_atual.destroy()  
