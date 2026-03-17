@@ -4,6 +4,8 @@ from tkcalendar import DateEntry
 from Services.ServicesNewPedido import ServicesNewPedidos
 import tkinter as tk
 import pandas as pd
+import sys
+import os
 
 
 class novopedido(ctk.CTk):
@@ -11,31 +13,35 @@ class novopedido(ctk.CTk):
     def __init__(self):
         super().__init__()
         
-        self.iconbitmap("Arts/icon.ico")
-
-        self.service = ServicesNewPedidos()
-    
+        self.iconbitmap(self.resource_path("Arts/icon.ico"))
+        self.service = ServicesNewPedidos(self)
         self.title("Novo Pedido")
         ctk.set_appearance_mode("light")
-    
         self.buildapp_pedido()
-    
-    
         self.service.info_add = self.info_add
         self.service.entrie_nome = self.entrie_nome
         self.service.entrie_quantidade = self.entrie_quantidade
         self.service.var_termo = self.var_termo
 
     def buildapp_pedido(self):
+
         self.tela_inicial_start_new()
         self.frame_principal()
         self.labels()
         self.bottons()
         self.entries()
+
+    def resource_path(self, relative_path):
+        try:
+            base_path = sys._MEIPASS
+        except AttributeError:
+            base_path = os.path.abspath(".")
+        return os.path.join(base_path, relative_path)
         
 
 
     def center_window(self, width, height):
+
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
         x = int((screen_width / 2) - (width / 2))
@@ -43,6 +49,7 @@ class novopedido(ctk.CTk):
         self.geometry(f"{width}x{height}+{x}+{y}")
 
     def tela_inicial_start_new(self):
+
         self.width = 1200
         self.height = 700
         self.center_window(self.width, self.height)
@@ -133,41 +140,11 @@ class novopedido(ctk.CTk):
 
 
 
-        
-
-
-
-        
-
-
-
-
-
-
-
     def bottons(self):
         
-
         self.botao_voltar = CTkButton(
             self.framemain,
             text= "VOLTAR",
-            text_color="White",
-            corner_radius= 20,
-            border_width=2,
-            fg_color="#777777",
-            border_color="#5e5e5e",
-            bg_color="transparent",
-            hover_color="#535353",
-            font=("SEGOE IU", 20, "bold"),
-            command=lambda: self.service.open_Frontend(self)
-        )
-        self.botao_voltar.place(relx=0.85, rely = 0.85, relheight = 0.07, relwidth = 0.11)
-
-
-
-        self.gerar_pedido = CTkButton(
-            self.framemain,
-            text= "GERAR PEDIDO",
             text_color="White",
             corner_radius= 20,
             border_width=2,
@@ -176,17 +153,25 @@ class novopedido(ctk.CTk):
             bg_color="transparent",
             hover_color="#b6b6b6",
             font=("SEGOE IU", 20, "bold"),
-            command=lambda: self.service.inserir_planilha(
-        nome=self.entrie_nome.get().strip(),
-        tamanho=self.combo_tamanho.get(),
-        quantidade=self.entrie_quantidade.get().strip(),
-        tipo=self.combo_tipo.get(),
-        emissao=self.entrie_data.get(),
-        termo=self.var_termo.get()
-    )
+            command=lambda: self.service.open_Frontend(self)
         )
-        self.gerar_pedido.place(relx=0.6, rely = 0.45, relheight = 0.07, relwidth = 0.25)
+        self.botao_voltar.place(relx=0.85, rely = 0.85, relheight = 0.07, relwidth = 0.11)
 
+        self.gerar_pedido = CTkButton(
+            self.framemain,
+            text= "GERAR PEDIDO",
+            text_color="White",
+            corner_radius= 20,
+            border_width=2,
+            fg_color="#09ff00",
+            border_color="#55d400",
+            bg_color="transparent",
+            hover_color="#23b100",
+            font=("SEGOE IU", 20, "bold"),
+            command= self.service.inserir_planilha
+            )
+        
+        self.gerar_pedido.place(relx=0.6, rely = 0.45, relheight = 0.07, relwidth = 0.25)
 
         self.info_add = CTkTextbox(
             self.framemain,
@@ -201,38 +186,21 @@ class novopedido(ctk.CTk):
         self.info_add.configure(state="disabled")
         self.info_add.place(relx=0.6, rely = 0.54, relheight = 0.07, relwidth = 0.25)
         
-        
-        
         self.limpar_info = CTkButton(
             self.framemain,
             text= "LIMPAR STATUS",
             text_color="White",
             corner_radius= 20,
             border_width=2,
-            fg_color="#dedede",
-            border_color="#e0e0e0",
+            fg_color="#db5000",
+            border_color="#d15400",
             bg_color="transparent",
-            hover_color="#b6b6b6",
+            hover_color="#b15500",
             font=("SEGOE IU", 20, "bold"),
             command= self.service.limpar_info
            )
         self.limpar_info.place(relx=0.6, rely = 0.635, relheight = 0.07, relwidth = 0.25)
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     def entries(self):
 
@@ -260,8 +228,6 @@ class novopedido(ctk.CTk):
         )
         self.entrie_data.place(relx=0.15, rely=0.44, relheight=0.06, relwidth=0.18)
 
-
-
         self.combo_tamanho = CTkComboBox(
 
             self.framemain,
@@ -279,7 +245,6 @@ class novopedido(ctk.CTk):
        )
         self.combo_tamanho.place(relx=0.15, rely=0.56, relheight=0.06, relwidth=0.18)
 
-
         self.entrie_quantidade = CTkEntry(
             self.framemain,
             bg_color="transparent",
@@ -293,7 +258,6 @@ class novopedido(ctk.CTk):
             justify = "center"
         )
         self.entrie_quantidade.place(relx = 0.12, rely = 0.67, relheight = 0.06, relwidth = 0.25)
-
 
         self.var_termo = tk.IntVar()
         self.check_assinatura = CTkCheckBox(
@@ -326,24 +290,22 @@ class novopedido(ctk.CTk):
             justify = "center"
        )
         self.combo_tipo.place(relx=0.12, rely=0.8, relheight=0.06, relwidth=0.25)
-
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
+        self.var_entrega = ctk.IntVar(value=0)
+        self.check_entrega = CTkCheckBox(
+            self.framemain,
+            fg_color="#aaaaaa",
+            bg_color="transparent",
+            border_color="#aaaaaa",
+            border_width=2,    
+            hover_color="#646464",
+            text="ENTREGA",
+            text_color="black",
+            font=("SEGOE IU", 12, "bold"),
+            variable=self.var_entrega
+        )
+        self.check_entrega.place(relx = 0.3, rely = 0.88)
 
 
 

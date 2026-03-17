@@ -1,5 +1,3 @@
-
-
 class MainServices:
 
     def open_new_pedidos(self, tela_atual):
@@ -9,11 +7,13 @@ class MainServices:
         app = novopedido()
         app.mainloop()
 
+
     def open_Estoque(self, tela_atual):
         tela_atual.destroy()  
         from Interface.Estoque import estoque
         app = estoque()
         app.mainloop()
+
 
     def open_Dashboard(self, tela_atual):
         tela_atual.destroy()  

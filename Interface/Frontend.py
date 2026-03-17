@@ -3,24 +3,20 @@ from customtkinter import CTkFrame, CTkLabel, CTkButton, CTkCheckBox, END
 from Services.ServicesMain import MainServices
 from Services.ServicesEstoque import ServicesEstoque
 from Services.ServicesDashboard import ServicesDashboard
-
 from Services.ServicesPedidos import ServicesPedidos
+import sys
+import os
 
 
 class Application(ctk.CTk):
-
-    
-
     def __init__(self):
         super().__init__()
         
-        self.iconbitmap("Arts/icon.ico")
-
+        self.iconbitmap(self.resource_path("Arts/icon.ico"))
         self.service = MainServices()
         self.service_estoque = ServicesEstoque()
         self.service_dashboarde = ServicesDashboard()
         self.service_pedidos = ServicesPedidos()
-
         self.title("Gerenciamento de Pedidos")
         ctk.set_appearance_mode("light") 
         self.buildapp()
@@ -33,9 +29,9 @@ class Application(ctk.CTk):
         self.frame_principal()
         self.labels()
         self.bottons()
+        self.texto()
 
-
-        
+ 
     def center_window(self, width, height):
       
         screen_width = self.winfo_screenwidth()
@@ -43,6 +39,13 @@ class Application(ctk.CTk):
         x = int((screen_width / 2) - (width / 2))
         y = int((screen_height / 2) - (height / 2))
         self.geometry(f"{width}x{height}+{x}+{y}")
+
+    def resource_path(self, relative_path):
+        try:
+            base_path = sys._MEIPASS
+        except AttributeError:
+            base_path = os.path.abspath(".")
+        return os.path.join(base_path, relative_path)
         
 
 
@@ -54,7 +57,6 @@ class Application(ctk.CTk):
         self.configure(fg_color="#d3d3d3")
         self.resizable(False, False)
         
-
 
     def frame_principal(self):
 
@@ -91,8 +93,6 @@ class Application(ctk.CTk):
         self.title.place(relx=0.22,rely=0.1)
 
 
-
-
     def bottons(self):
         
 
@@ -109,7 +109,7 @@ class Application(ctk.CTk):
             font=("SEGOE IU", 20, "bold"),
             command= lambda: self.service.open_new_pedidos(self)
         )
-        self.botao_add_pedido.place(relx=0.35, rely = 0.3, relheight = 0.1, relwidth = 0.3)
+        self.botao_add_pedido.place(relx=0.35, rely = 0.39, relheight = 0.1, relwidth = 0.3)
 
 
         self.botao_ver_estoque = CTkButton(
@@ -125,12 +125,12 @@ class Application(ctk.CTk):
             font=("SEGOE IU", 20, "bold"),
             command= lambda: self.service.open_Estoque(self)
         )
-        self.botao_ver_estoque.place(relx=0.35, rely = 0.42, relheight = 0.1, relwidth = 0.3)
+        self.botao_ver_estoque.place(relx=0.35, rely = 0.51, relheight = 0.1, relwidth = 0.3)
 
 
         self.botao_dashboard = CTkButton(
             self.framemain,
-            text= "DASHBOARD",
+            text= "ENTREGAS",
             text_color="White",
             corner_radius= 20,
             border_width=2,
@@ -141,7 +141,7 @@ class Application(ctk.CTk):
             font=("SEGOE IU", 20, "bold"),
             command= lambda: self.service.open_Dashboard(self)
         )
-        self.botao_dashboard.place(relx=0.35, rely = 0.54, relheight = 0.1, relwidth = 0.3)
+        self.botao_dashboard.place(relx=0.35, rely = 0.63, relheight = 0.1, relwidth = 0.3)
 
 
 
@@ -158,7 +158,19 @@ class Application(ctk.CTk):
             font=("SEGOE IU", 20, "bold"),
             command= lambda: self.service.open_Pedidos(self)
         )
-        self.botao_ver_pedidos.place(relx=0.35, rely = 0.66, relheight = 0.1, relwidth = 0.3)
+        self.botao_ver_pedidos.place(relx=0.35, rely = 0.75, relheight = 0.1, relwidth = 0.3)
+
+
+    def texto(self):
+
+        self.textin = CTkLabel(
+            self.framemain,
+            text= "O SISTEMA QUE FACILITA SUA VIDA!",
+            text_color= "#b6b6b6",
+            bg_color="transparent",
+            font=("SEGOE IU", 20, "bold")
+        )
+        self.textin.place(relx = 0.337, rely = 0.25)
 
        
 

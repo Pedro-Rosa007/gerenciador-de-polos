@@ -2,6 +2,8 @@ import customtkinter as ctk
 from customtkinter import CTkFrame, CTkLabel, CTkButton, CTkCheckBox, END
 from Services.ServicesPedidos import ServicesPedidos
 from tkinter import ttk
+import sys
+import os
 
 
 class pedidos(ctk.CTk):
@@ -9,15 +11,14 @@ class pedidos(ctk.CTk):
     def __init__(self):
         super().__init__()
         
-        self.iconbitmap("Arts/icon.ico")
-
+        self.iconbitmap(self.resource_path("Arts/icon.ico"))
         self.service = ServicesPedidos()
-
         self.title("Tabela de Pedidos")
         ctk.set_appearance_mode("light")
         self.buildapp_pedido()
 
     def buildapp_pedido(self):
+
         self.tela_inicial_start_new()
         self.frame_principal()
         self.labels()
@@ -25,8 +26,18 @@ class pedidos(ctk.CTk):
         self.treeview()
         self.atualizar_treeview()
 
+    def resource_path(self, relative_path):
+        import sys
+        import os
+        try:
+            base_path = sys._MEIPASS
+        except AttributeError:
+            base_path = os.path.abspath(".")
+        return os.path.join(base_path, relative_path)
+    
 
     def center_window(self, width, height):
+
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
         x = int((screen_width / 2) - (width / 2))
@@ -34,6 +45,7 @@ class pedidos(ctk.CTk):
         self.geometry(f"{width}x{height}+{x}+{y}")
 
     def tela_inicial_start_new(self):
+
         self.width = 1200
         self.height = 700
         self.center_window(self.width, self.height)
@@ -81,7 +93,15 @@ class pedidos(ctk.CTk):
 
         self.tree = ttk.Treeview(
             self.framemain,
-            columns=("NOME DO COLABORADOR", "TIPO DE VESTIMENTA", "TAMANHO", "QUANTIDADE", "DATA DO PEDIDO", "TERMO ASSINADO"),
+            columns=(
+                "NOME DO COLABORADOR",
+                "TIPO DE VESTIMENTA",
+                "TAMANHO",
+                "QUANTIDADE",
+                "DATA DO PEDIDO",
+                "TERMO ASSINADO",
+                "ENTREGA"
+            ),
             show="headings"
         )
     
@@ -91,6 +111,7 @@ class pedidos(ctk.CTk):
         self.tree.heading("QUANTIDADE", text="QUANTIDADE", anchor="center")
         self.tree.heading("DATA DO PEDIDO", text="DATA DO PEDIDO", anchor="center")
         self.tree.heading("TERMO ASSINADO", text="TERMO ASSINADO", anchor="center")
+        self.tree.heading("ENTREGA", text="ENTREGA", anchor="center")
     
         self.tree.column("NOME DO COLABORADOR", width=80, anchor="center")
         self.tree.column("TIPO DE VESTIMENTA", width=80, anchor="center")
@@ -98,8 +119,8 @@ class pedidos(ctk.CTk):
         self.tree.column("QUANTIDADE", width=80, anchor="center")
         self.tree.column("DATA DO PEDIDO", width=80, anchor="center")
         self.tree.column("TERMO ASSINADO", width=80, anchor="center")
+        self.tree.column("ENTREGA", width=80, anchor="center")
     
-
         self.scrollbar = ttk.Scrollbar(
             self.framemain,
             orient="vertical",
@@ -109,11 +130,10 @@ class pedidos(ctk.CTk):
         self.tree.configure(yscrollcommand=self.scrollbar.set)
     
         self.tree.place(relx=0.1, rely=0.24, relwidth=0.7, relheight=0.7)
-    
         self.scrollbar.place(relx=0.8, rely=0.24, relheight=0.7)
-
-
-
+    
+    
+    
 
 
     def carregar_treeview(self, dados):
@@ -133,34 +153,6 @@ class pedidos(ctk.CTk):
         self.carregar_treeview(dados)
 
 
-        
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-
-
-
-
-
-
     def bottons(self):
         
 
@@ -170,10 +162,10 @@ class pedidos(ctk.CTk):
             text_color="White",
             corner_radius= 20,
             border_width=2,
-            fg_color="#777777",
-            border_color="#5e5e5e",
+            fg_color="#dedede",
+            border_color="#e0e0e0",
             bg_color="transparent",
-            hover_color="#535353",
+            hover_color="#b6b6b6",
             font=("SEGOE IU", 20, "bold"),
             command=lambda: self.service.open_Frontend(self)
         )
